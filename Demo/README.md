@@ -7,4 +7,4 @@ This folder contains the demonstration video of the IoT Smart Parking System.
 Watch the project demonstration here:
 
 **Google Drive:**  
-[<PASTE_YOUR_SHAREABLE_LINK_HERE>](https://drive.google.com/file/d/1ECQRSfxGtpewxbas_RVnLIWCcolOnf3p/view?usp=sharing)
+https://drive.google.com/file/d/1ECQRSfxGtpewxbas_RVnLIWCcolOnf3p/view?usp=sharing
