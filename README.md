@@ -6,11 +6,17 @@ An IoT-based Smart Parking System developed using **ESP32**, **MQTT**, **Node-RE
 
 ## 📖 Project Overview
 
+## 📖 Project Overview
+
 The IoT Smart Parking System is designed to address the challenges of conventional parking systems by providing real-time parking slot availability. The system detects vehicle entry, exit, and slot occupancy using ultrasonic sensors. An ESP32 microcontroller processes the sensor data and publishes it through the MQTT protocol to a Node-RED dashboard for live monitoring.
 
-Additionally, the system monitors environmental conditions such as temperature and humidity using a DHT11 sensor. The modular architecture enables easy scalability for larger parking infrastructures and smart city applications.
+Using cloud-based MQTT communication, the system enables remote monitoring from anywhere with an internet connection. Users can access real-time parking status, slot availability, vehicle count, temperature, and humidity through both the Node-RED dashboard and a mobile MQTT client.
+
+Additionally, the system monitors environmental conditions using a DHT11 sensor and supports email alerts when the parking area becomes full. Its modular architecture ensures scalability, making it suitable for larger parking infrastructures and future smart city applications.
 
 ---
+
+## ✨ Features
 
 ## ✨ Features
 
@@ -20,12 +26,13 @@ Additionally, the system monitors environmental conditions such as temperature a
 - Parking slot occupancy detection
 - MQTT-based communication
 - Interactive Node-RED dashboard
+- Remote monitoring from anywhere using cloud connectivity
+- Mobile dashboard monitoring via MQTT client
 - Temperature and humidity monitoring
 - Email alert notification when parking is full
 - Event-driven data transmission
 - Low latency and reliable performance
 - Scalable architecture for smart parking applications
-
 ---
 
 ## 🛠 Technologies Used
@@ -148,11 +155,9 @@ Watch the demonstration video of the IoT Smart Parking System here:
 
 - Mobile application integration
 - Cloud database support
-- AI-based parking prediction
-- License plate recognition
 - Multi-floor parking management
 - Smart city integration
-
+- Support for larger parking infrastructures by increasing the number of parking slots
 ---
 
 ## 👨‍💻 Author
