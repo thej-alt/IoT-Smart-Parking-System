@@ -6,8 +6,6 @@ An IoT-based Smart Parking System developed using **ESP32**, **MQTT**, **Node-RE
 
 ## 📖 Project Overview
 
-## 📖 Project Overview
-
 The IoT Smart Parking System is designed to address the challenges of conventional parking systems by providing real-time parking slot availability. The system detects vehicle entry, exit, and slot occupancy using ultrasonic sensors. An ESP32 microcontroller processes the sensor data and publishes it through the MQTT protocol to a Node-RED dashboard for live monitoring.
 
 Using cloud-based MQTT communication, the system enables remote monitoring from anywhere with an internet connection. Users can access real-time parking status, slot availability, vehicle count, temperature, and humidity through both the Node-RED dashboard and a mobile MQTT client.
@@ -15,8 +13,6 @@ Using cloud-based MQTT communication, the system enables remote monitoring from 
 Additionally, the system monitors environmental conditions using a DHT11 sensor and supports email alerts when the parking area becomes full. Its modular architecture ensures scalability, making it suitable for larger parking infrastructures and future smart city applications.
 
 ---
-
-## ✨ Features
 
 ## ✨ Features
 
@@ -115,6 +111,7 @@ IoT-Smart-Parking-System/
 │   ├── flowchart.png
 │   ├── hardware_setup.png
 │   └── dashboard.png
+│   └── Mobile Monitoring using MQTT Application.png
 │
 ├── Report/
 │   └── Samsung_Innovation_Campus_Report.pdf
