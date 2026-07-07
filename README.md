@@ -61,7 +61,7 @@ Additionally, the system monitors environmental conditions using a DHT11 sensor 
 - Arduino IDE
 - Node-RED
 - MQTT Broker
-- Embedded C/C++
+- Embedded C++
 
 ---
 
