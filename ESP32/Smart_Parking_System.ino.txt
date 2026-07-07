@@ -1,0 +1,212 @@
+#include <WiFi.h>
+#include <PubSubClient.h>
+#include "DHT.h"
+
+/* ---------- WiFi ---------- */
+const char* ssid = "asd";
+const char* password = "12345678";
+
+/* ---------- MQTT ---------- */
+const char* mqtt_server = "broker.emqx.io";
+const int mqtt_port = 1883;
+const char* mqtt_username = "admin";
+const char* mqtt_password = "public";
+
+/* ---------- MQTT Topics ---------- */
+const char* topic_status      = "parking/status";
+const char* topic_filled      = "parking/slots/filled";
+const char* topic_available   = "parking/slots/available";
+const char* topic_singleSlot  = "parking/slot/single";
+const char* topic_temperature = "parking/environment/temperature";
+const char* topic_humidity    = "parking/environment/humidity";
+const char* topic_slot_map    = "parking/slot/map";
+
+/* ---------- Ultrasonic Pins ---------- */
+#define TRIG_ENTRY 19
+#define ECHO_ENTRY 23
+#define TRIG_EXIT 33
+#define ECHO_EXIT 15
+#define TRIG_SLOT 18
+#define ECHO_SLOT 13
+
+/* ---------- LEDs ---------- */
+#define RED_LED   25
+#define GREEN_LED 26
+#define WHITE_LED 27
+
+/* ---------- DHT11 ---------- */
+#define DHTPIN 14
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
+
+/* ---------- Config ---------- */
+#define MAX_SLOTS 5
+#define DIST_THRESHOLD 10
+#define SLOT_OCCUPIED_DIST 25   // adjust if needed
+
+int carCount = 0;
+int lastCarCount = -1;
+bool lastSlotOccupied = false;
+
+/* ---------- Blink Control ---------- */
+unsigned long lastBlink = 0;
+bool ledState = false;
+
+/* ---------- Flags ---------- */
+bool entryDetected = false;
+bool exitDetected  = false;
+
+/* ---------- WiFi & MQTT ---------- */
+WiFiClient espClient;
+PubSubClient client(espClient);
+
+/* ---------- Ultrasonic ---------- */
+long readDistance(int trig, int echo) {
+  digitalWrite(trig, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig, LOW);
+  long duration = pulseIn(echo, HIGH, 30000);
+  if (duration == 0) return 100;
+  return duration * 0.034 / 2;
+}
+
+/* ---------- WiFi ---------- */
+void connectWiFi() {
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) delay(500);
+}
+
+/* ---------- MQTT ---------- */
+void connectMQTT() {
+  while (!client.connected()) {
+    client.connect("ESP32_Parking", mqtt_username, mqtt_password);
+    delay(1000);
+  }
+}
+
+/* ---------- Publish ---------- */
+void publishData(bool slotOccupied, float temp, float hum) {
+  int available = MAX_SLOTS - carCount;
+  String status = (carCount >= MAX_SLOTS) ? "FULL" : "AVAILABLE";
+
+  client.publish(topic_status, status.c_str(), true);
+  client.publish(topic_filled, String(carCount).c_str(), true);
+  client.publish(topic_available, String(available).c_str(), true);
+  client.publish(topic_singleSlot, slotOccupied ? "OCCUPIED" : "UNOCCUPIED", true);
+  client.publish(topic_temperature, String(temp).c_str(), true);
+  client.publish(topic_humidity, String(hum).c_str(), true);
+
+  // SLOT MAP
+  String slotMap = "[";
+  for (int i = 0; i < MAX_SLOTS; i++) {
+    slotMap += (i < carCount) ? "CAR" : "FREE";
+    if (i < MAX_SLOTS - 1) slotMap += "][";
+  }
+  slotMap += "]";
+  client.publish(topic_slot_map, slotMap.c_str(), true);
+
+  // SERIAL OUTPUT
+  Serial.println("===== PARKING DATA =====");
+  Serial.println("1. Total Slots     : " + String(MAX_SLOTS));
+  Serial.println("2. Filled Slots    : " + String(carCount));
+  Serial.println("3. Available Slots : " + String(available));
+  Serial.println("4. Status          : " + status);
+  Serial.println("5. Single Slot     : " + String(slotOccupied ? "OCCUPIED" : "UNOCCUPIED"));
+  Serial.println("6. Temperature     : " + String(temp) + " °C");
+  Serial.println("7. Humidity        : " + String(hum) + " %");
+  Serial.println("8. Slot Map        : " + slotMap);
+  Serial.println("========================");
+}
+
+/* ---------- LEDs ---------- */
+void blinkWhite() {
+  digitalWrite(RED_LED, LOW);
+  digitalWrite(GREEN_LED, LOW);
+  for (int i = 0; i < 3; i++) {
+    digitalWrite(WHITE_LED, HIGH);
+    delay(150);
+    digitalWrite(WHITE_LED, LOW);
+    delay(150);
+  }
+  lastBlink = 0;
+}
+
+void updateStatusLEDs() {
+  unsigned long now = millis();
+  if (now - lastBlink >= 500) {
+    lastBlink = now;
+    ledState = !ledState;
+    if (carCount >= MAX_SLOTS) {
+      digitalWrite(RED_LED, ledState);
+      digitalWrite(GREEN_LED, LOW);
+    } else {
+      digitalWrite(GREEN_LED, ledState);
+      digitalWrite(RED_LED, LOW);
+    }
+  }
+}
+
+/* ---------- SETUP ---------- */
+void setup() {
+  Serial.begin(115200);
+  delay(2000);
+  Serial.println("ESP32 SMART PARKING STARTED");
+
+  pinMode(TRIG_ENTRY, OUTPUT);
+  pinMode(ECHO_ENTRY, INPUT);
+  pinMode(TRIG_EXIT, OUTPUT);
+  pinMode(ECHO_EXIT, INPUT);
+  pinMode(TRIG_SLOT, OUTPUT);
+  pinMode(ECHO_SLOT, INPUT);
+
+  pinMode(RED_LED, OUTPUT);
+  pinMode(GREEN_LED, OUTPUT);
+  pinMode(WHITE_LED, OUTPUT);
+
+  connectWiFi();
+  client.setServer(mqtt_server, mqtt_port);
+  dht.begin();
+}
+
+/* ---------- LOOP ---------- */
+void loop() {
+  if (!client.connected()) connectMQTT();
+  client.loop();
+
+  long entryDist = readDistance(TRIG_ENTRY, ECHO_ENTRY);
+  long exitDist  = readDistance(TRIG_EXIT, ECHO_EXIT);
+  long slotDist  = readDistance(TRIG_SLOT, ECHO_SLOT);
+
+  bool slotOccupied = (slotDist < SLOT_OCCUPIED_DIST);
+
+  float temperature = dht.readTemperature();
+  float humidity    = dht.readHumidity();
+
+  // ENTRY
+  if (entryDist < DIST_THRESHOLD && !entryDetected && carCount < MAX_SLOTS) {
+    carCount++;
+    entryDetected = true;
+    blinkWhite();
+  }
+  if (entryDist >= DIST_THRESHOLD) entryDetected = false;
+
+  // EXIT
+  if (exitDist < DIST_THRESHOLD && !exitDetected && carCount > 0) {
+    carCount--;
+    exitDetected = true;
+    blinkWhite();
+  }
+  if (exitDist >= DIST_THRESHOLD) exitDetected = false;
+
+  // ✅ CRITICAL FIX: publish when carCount OR slot sensor changes
+  if (carCount != lastCarCount || slotOccupied != lastSlotOccupied) {
+    publishData(slotOccupied, temperature, humidity);
+    lastCarCount = carCount;
+    lastSlotOccupied = slotOccupied;
+  }
+
+  updateStatusLEDs();
+  delay(50);
+}
