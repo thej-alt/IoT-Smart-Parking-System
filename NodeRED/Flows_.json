@@ -1,0 +1,895 @@
+[
+    {
+        "id": "c7f044d6e7272d96",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "902846369d7a6d2a",
+        "type": "mqtt in",
+        "z": "c7f044d6e7272d96",
+        "name": "",
+        "topic": "parking/status",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "f1947f6297b4c190",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 360,
+        "wires": [
+            [
+                "db4f3c8121310c85",
+                "7d8ca910cb3b733e"
+            ]
+        ]
+    },
+    {
+        "id": "e69596444f324af4",
+        "type": "function",
+        "z": "c7f044d6e7272d96",
+        "name": "filled slots",
+        "func": "msg.payload=msg.payload.filled_slots;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1080,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6c5a9baeb2f864e6",
+        "type": "function",
+        "z": "c7f044d6e7272d96",
+        "name": "available slots",
+        "func": "msg.payload = msg.payload.available_slots;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1100,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "db4f3c8121310c85",
+        "type": "ui-text",
+        "z": "c7f044d6e7272d96",
+        "group": "e59b7a383f9af24f",
+        "order": 1,
+        "width": 11,
+        "height": 3,
+        "name": "",
+        "label": "Parking Status",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "style": true,
+        "font": "Lucida Sans Typewriter,Lucida Console,Monaco,monospace",
+        "fontSize": "25",
+        "color": "#0a4fbd",
+        "wrapText": false,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 680,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "dab55225496bfe9d",
+        "type": "function",
+        "z": "c7f044d6e7272d96",
+        "name": "Status",
+        "func": "msg.payload = msg.payload.status;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1070,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6f808436516df9ca",
+        "type": "function",
+        "z": "c7f044d6e7272d96",
+        "name": "temp",
+        "func": "msg.payload = msg.payload.temperature;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1070,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e6abeae4d06131e1",
+        "type": "ui-gauge",
+        "z": "c7f044d6e7272d96",
+        "name": "TEMPERATURE",
+        "group": "5a16c6245418ae98",
+        "order": 1,
+        "value": "payload",
+        "valueType": "msg",
+        "width": 6,
+        "height": 3,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "TEMPERATURE",
+        "alwaysShowTitle": false,
+        "floatingTitlePosition": "top-left",
+        "units": "deg Celcius",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#5cd65c",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "20",
+                "color": "#ffc800",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "40",
+                "color": "#ea5353",
+                "text": "",
+                "textType": "label"
+            }
+        ],
+        "min": 0,
+        "max": "60",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 690,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "16914b9a6d8af671",
+        "type": "function",
+        "z": "c7f044d6e7272d96",
+        "name": "function 2",
+        "func": "msg.payload = msg.payload.single_slot;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1080,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ef18e074a167e10a",
+        "type": "ui-text",
+        "z": "c7f044d6e7272d96",
+        "group": "1a88288554c5d486",
+        "order": 1,
+        "width": 0,
+        "height": 3,
+        "name": "Slot_1",
+        "label": "Parking Slot.",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "style": true,
+        "font": "",
+        "fontSize": "30",
+        "color": "#df18e2",
+        "wrapText": false,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 650,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "351ac188f06d805f",
+        "type": "function",
+        "z": "c7f044d6e7272d96",
+        "name": "humidity",
+        "func": "msg.payload = msg.payload.humidity;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1080,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7e3bc9403a5c63f7",
+        "type": "ui-gauge",
+        "z": "c7f044d6e7272d96",
+        "name": "Humidity",
+        "group": "5a16c6245418ae98",
+        "order": 2,
+        "value": "payload",
+        "valueType": "msg",
+        "width": 6,
+        "height": 3,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "HUMIDITY",
+        "alwaysShowTitle": false,
+        "floatingTitlePosition": "top-left",
+        "units": "% Relative Humidity (RH)",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#73ea53",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "40",
+                "color": "#ffc800",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "80",
+                "color": "#ea5353",
+                "text": "",
+                "textType": "label"
+            }
+        ],
+        "min": 0,
+        "max": "100",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 660,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c588fadb4179ee2b",
+        "type": "function",
+        "z": "c7f044d6e7272d96",
+        "name": "slot_box",
+        "func": "const TOTAL_SLOTS = 5;\n\n// payload is now just a number\nlet filled = Number(msg.payload);\n\nif (isNaN(filled)) filled = 0;\nif (filled < 0) filled = 0;\nif (filled > TOTAL_SLOTS) filled = TOTAL_SLOTS;\n\nlet slots = [];\nfor (let i = 0; i < TOTAL_SLOTS; i++) {\n    slots.push(i < filled);\n}\n\nmsg.payload = slots;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1080,
+        "y": 100,
+        "wires": [
+            [
+                "ad0bb46bc1ae55a5"
+            ]
+        ]
+    },
+    {
+        "id": "646418f064e61d86",
+        "type": "json",
+        "z": "c7f044d6e7272d96",
+        "name": "",
+        "property": "payload",
+        "action": "str",
+        "pretty": false,
+        "x": 1070,
+        "y": 60,
+        "wires": [
+            [
+                "c588fadb4179ee2b"
+            ]
+        ]
+    },
+    {
+        "id": "fb9a6e9d700ac2fa",
+        "type": "ui-template",
+        "z": "c7f044d6e7272d96",
+        "group": "3b9c647e0fba08c3",
+        "page": "",
+        "ui": "",
+        "name": "slot_mapper",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "head": "",
+        "format": "<template>\n  <div style=\"display:flex; gap:15px; justify-content:center;\">\n    <div\n      v-for=\"(slot, index) in slots\"\n      :key=\"index\"\n      class=\"slot\"\n      :class=\"slot === 'CAR' ? 'occupied' : 'free'\"\n    >\n      {{ slot }}\n    </div>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() {\n    return {\n      slots: []\n    }\n  },\n  mounted() {\n    this.parsePayload(this.msg)\n  },\n  watch: {\n    msg(newMsg) {\n      this.parsePayload(newMsg)\n    }\n  },\n  methods: {\n    parsePayload(msg) {\n      if (!msg || !msg.payload) return;\n\n      // Convert payload to string\n      let text = msg.payload.toString();\n\n      // Extract values between []\n      let matches = text.match(/\\[(.*?)\\]/g);\n      if (!matches) return;\n\n      // Clean values: [\"CAR\", \"FREE\", ...]\n      this.slots = matches.map(s =>\n        s.replace(\"[\", \"\").replace(\"]\", \"\")\n      );\n    }\n  }\n}\n</script>\n\n<style>\n.slot {\n  width: 80px;\n  height: 80px;\n  border-radius: 10px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: white;\n  font-weight: bold;\n  border: 2px solid #333;\n}\n\n.free {\n  background-color: green;\n}\n\n.occupied {\n  background-color: red;\n}\n</style>\n",
+        "storeOutMessages": true,
+        "passthru": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 670,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ad0bb46bc1ae55a5",
+        "type": "debug",
+        "z": "c7f044d6e7272d96",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "3447da39deae8c6d",
+        "type": "ui-text",
+        "z": "c7f044d6e7272d96",
+        "group": "b3ebbe7e91540f3b",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "Filled_Slots",
+        "label": "Filled_Slots : ",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "style": true,
+        "font": "Times New Roman,Times,serif",
+        "fontSize": "30",
+        "color": "#ec1313",
+        "wrapText": false,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 670,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "5ae55dcb4e8b236d",
+        "type": "ui-text",
+        "z": "c7f044d6e7272d96",
+        "group": "e512750a1c3711c0",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "Available_Slots",
+        "label": "Available_Slots :",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "style": true,
+        "font": "Times New Roman,Times,serif",
+        "fontSize": "30",
+        "color": "#0e7f06",
+        "wrapText": false,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 680,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "3bfc0ac6f3a134aa",
+        "type": "ui-text",
+        "z": "c7f044d6e7272d96",
+        "group": "0031df4e449c9050",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Total_Slots : 5",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "style": true,
+        "font": "Times New Roman,Times,serif",
+        "fontSize": "30",
+        "color": "#ab00fa",
+        "wrapText": false,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 880,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "7d21e6491b0bdd48",
+        "type": "mqtt in",
+        "z": "c7f044d6e7272d96",
+        "name": "",
+        "topic": "parking/environment/temperature",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "f1947f6297b4c190",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 540,
+        "wires": [
+            [
+                "e6abeae4d06131e1",
+                "7d8ca910cb3b733e"
+            ]
+        ]
+    },
+    {
+        "id": "420b46223cfa4b3d",
+        "type": "mqtt in",
+        "z": "c7f044d6e7272d96",
+        "name": "",
+        "topic": "parking/slots/filled",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "f1947f6297b4c190",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 160,
+        "wires": [
+            [
+                "3447da39deae8c6d",
+                "7d8ca910cb3b733e"
+            ]
+        ]
+    },
+    {
+        "id": "ad0dc672d905403a",
+        "type": "mqtt in",
+        "z": "c7f044d6e7272d96",
+        "name": "",
+        "topic": "parking/slots/available",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "f1947f6297b4c190",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 440,
+        "wires": [
+            [
+                "5ae55dcb4e8b236d",
+                "7d8ca910cb3b733e"
+            ]
+        ]
+    },
+    {
+        "id": "a6618a9e3c737513",
+        "type": "mqtt in",
+        "z": "c7f044d6e7272d96",
+        "name": "",
+        "topic": "parking/environment/humidity",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "f1947f6297b4c190",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 620,
+        "wires": [
+            [
+                "7e3bc9403a5c63f7",
+                "7d8ca910cb3b733e"
+            ]
+        ]
+    },
+    {
+        "id": "a4d37a351390e597",
+        "type": "mqtt in",
+        "z": "c7f044d6e7272d96",
+        "name": "",
+        "topic": "parking/slot/single",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "f1947f6297b4c190",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 240,
+        "wires": [
+            [
+                "ef18e074a167e10a",
+                "7d8ca910cb3b733e"
+            ]
+        ]
+    },
+    {
+        "id": "fae68b15e516f2ab",
+        "type": "mqtt in",
+        "z": "c7f044d6e7272d96",
+        "name": "",
+        "topic": "parking/slot/map",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "f1947f6297b4c190",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 80,
+        "wires": [
+            [
+                "fb9a6e9d700ac2fa",
+                "7d8ca910cb3b733e"
+            ]
+        ]
+    },
+    {
+        "id": "f5a6cb6183173303",
+        "type": "e-mail",
+        "z": "c7f044d6e7272d96",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "authtype": "BASIC",
+        "saslformat": true,
+        "token": "oauth2Response.access_token",
+        "secure": true,
+        "tls": true,
+        "name": "122ec0025@iiitk.ac.in",
+        "dname": "sai",
+        "x": 930,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "7d8ca910cb3b733e",
+        "type": "join",
+        "z": "c7f044d6e7272d96",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": false,
+        "timeout": "",
+        "count": "8",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 570,
+        "y": 680,
+        "wires": [
+            [
+                "5fdb06adf5f0f4f1"
+            ]
+        ]
+    },
+    {
+        "id": "5fdb06adf5f0f4f1",
+        "type": "function",
+        "z": "c7f044d6e7272d96",
+        "name": "function 3",
+        "func": "let d = msg.payload;\n\nlet lat = 15.75819;\nlet lon = 78.04025;\nlet mapLink = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=16/${lat}/${lon}`;\n\nmsg.topic = \"🚗 Smart Parking Alert\";\n\nmsg.payload =\n    \"Smart Parking Status Update\\n\\n\" +\n    \"Parking Status      : \" + d[\"parking/status\"] + \"\\n\" +\n    \"Total Slots         : 5\\n\" +\n    \"Filled Slots        : \" + d[\"parking/slots/filled\"] + \"\\n\" +\n    \"Available Slots     : \" + d[\"parking/slots/available\"] + \"\\n\\n\" +\n    \"Temperature         : \" + d[\"parking/environment/temperature\"] + \" °C\\n\" +\n    \"Humidity            : \" + d[\"parking/environment/humidity\"] + \" %\\n\\n\" +\n    \"Slot Map            : \" + d[\"parking/slot/map\"] + \"\\n\\n\" +\n    \"Parking Location Map:\\n\" +\n    mapLink + \"\\n\\n\" +\n    \"— Smart Parking System\";\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 680,
+        "wires": [
+            [
+                "f5a6cb6183173303"
+            ]
+        ]
+    },
+    {
+        "id": "6f5d4b6d1cd07554",
+        "type": "ui-template",
+        "z": "c7f044d6e7272d96",
+        "group": "755433ce2a0bcde3",
+        "page": "",
+        "ui": "",
+        "name": "",
+        "order": 1,
+        "width": 0,
+        "height": 7,
+        "head": "",
+        "format": "<template>\n    <div\n        style=\"height: 100%; width: 100%; overflow: hidden; border-radius: 12px; border: 4px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1);\">\n        <iframe width=\"100%\" height=\"200%\" frameborder=\"0\" scrolling=\"no\" marginheight=\"0\" marginwidth=\"0\"\n            :src=\"mapUrl\">\n        </iframe>\n    </div>\n</template>\n\n<script>\n    export default {\n    data() {\n        return {\n            // Your Location\n            lat: 15.75819,\n            lon: 78.04025\n        }\n    },\n    computed: {\n        mapUrl() {\n            return `https://www.openstreetmap.org/export/embed.html?bbox=${this.lon-0.01}%2C${this.lat-0.01}%2C${this.lon+0.01}%2C${this.lat+0.01}&layer=mapnik&marker=${this.lat}%2C${this.lon}`;\n        }\n    }\n}\n</script>",
+        "storeOutMessages": true,
+        "passthru": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 160,
+        "y": 700,
+        "wires": [
+            [
+                "7d8ca910cb3b733e"
+            ]
+        ]
+    },
+    {
+        "id": "f1947f6297b4c190",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.emqx.io",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "e59b7a383f9af24f",
+        "type": "ui-group",
+        "name": "Parking",
+        "page": "fbfe449566a7265f",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "5a16c6245418ae98",
+        "type": "ui-group",
+        "name": "",
+        "page": "fbfe449566a7265f",
+        "width": 6,
+        "height": 1,
+        "order": 7,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "1a88288554c5d486",
+        "type": "ui-group",
+        "name": "slot",
+        "page": "fbfe449566a7265f",
+        "width": 6,
+        "height": 1,
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "3b9c647e0fba08c3",
+        "type": "ui-group",
+        "name": "Slot_Mapper",
+        "page": "fbfe449566a7265f",
+        "width": 12,
+        "height": 1,
+        "order": 3,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "b3ebbe7e91540f3b",
+        "type": "ui-group",
+        "name": "filled slots",
+        "page": "fbfe449566a7265f",
+        "width": 4,
+        "height": 1,
+        "order": 6,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "e512750a1c3711c0",
+        "type": "ui-group",
+        "name": "available slots",
+        "page": "fbfe449566a7265f",
+        "width": 4,
+        "height": 1,
+        "order": 5,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "0031df4e449c9050",
+        "type": "ui-group",
+        "name": "total_slots",
+        "page": "fbfe449566a7265f",
+        "width": 4,
+        "height": 1,
+        "order": 4,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "755433ce2a0bcde3",
+        "type": "ui-group",
+        "name": "Map",
+        "page": "fbfe449566a7265f",
+        "width": 6,
+        "height": 1,
+        "order": 8,
+        "showTitle": true,
+        "className": "",
+        "visible": true,
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "fbfe449566a7265f",
+        "type": "ui-page",
+        "name": "Parking system",
+        "ui": "1611f3d307e4d161",
+        "path": "/page1",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "3aaf61057942f971",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "1611f3d307e4d161",
+        "type": "ui-base",
+        "name": "parking stauts",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "3aaf61057942f971",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#0a5ee6",
+            "primary": "#0094ce",
+            "bgPage": "#8f8f8f",
+            "groupBg": "#ffffff",
+            "groupOutline": "#ff1100"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "2dd4e6b653f67141",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@flowfuse/node-red-dashboard": "1.30.0",
+            "node-red-node-email": "5.0.2"
+        }
+    }
+]
